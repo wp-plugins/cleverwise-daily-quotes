@@ -47,7 +47,7 @@ Adds daily quotes (tips, snippets, etc) sections with the ability to choose the 
 == Installation ==
 
 <ol>
-<li>Upload the <strong>cleverwise-redirect-it</strong> directory to your plugins.</li>
+<li>Upload the <strong>cleverwise-daily-quotes</strong> directory to your plugins.</li>
 <li>In Wordpress management panel activate "<strong>Cleverwise Daily Quotes</strong>" plugin.</li>
 <li>In the "<strong>Settings</strong>" menu a new option "<strong>Daily Quotes</strong>" will appear.</li>
 <li>Once you have loaded the main panel for the plugin click on the "<strong>Help Guide</strong>" link which explains in detail how to use the plugin.</li>
