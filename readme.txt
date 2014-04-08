@@ -3,7 +3,7 @@ Contributors: cyberws
 Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
-Tested up to: 3.8.1
+Tested up to: 3.8.2
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,8 +33,6 @@ Adds daily quotes (tips, snippets, etc) sections with the ability to choose the 
 <p>This plugin has a default/general quote layout/theme.  You are able to easily edit this theme to fit your site's design.  However it isn't one theme and done; nope.  Every daily quote section has the option for its own custom theme.  That way if you want a specific quote section to be themed differently no problem.  Therefore if you had ten quote sections seven may use the default/general one and the three others use custom layouts unique to them.  Another advantage to this design is you could use the same quote information and setup multiple sections and theme them differently.  This allows you to display the same information in different ways for different areas/categories of your site.</p>
 
 <p>Isn't this quote goodness on steroids? I mean with unlimited quote sections, total category control, and total layout control with custom quote section override what else could it be?! Sold? Awesome! Well because you use Wordpress and obviously know a good content manager when you see it this plugin is available to you for the unbelievable low price of FREE! However act fast because if you don't someone else will download it before you. ;-)</p>
-
-<p>In addition you are able to easily search through your redirect records to quickly locate matches.  Plus you have total control over where visitors are sent if plugin can't find a redirect match.  All of this is easily changable at any time through Wordpress.</p>
 
 <p>Optional: Supports Memcached caching system for reduced database load and optimized daily information displaying.</p>
 
