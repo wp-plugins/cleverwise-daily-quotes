@@ -4,7 +4,7 @@ Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,10 +67,13 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.1 =
+Fixed: Shortcode in certain areas would cause incorrect placement.
+
 = 1.0 =
 Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.0 =
-Plugin is live!
+= 1.1 =
+Plugin should no longer display at top of page when shortcode is located elsewhere.

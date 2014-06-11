@@ -415,6 +415,10 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.1</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Fixed: Shortcode in certain areas would cause incorrect placement.</li>
+</ul>
 <p>Version: <b>1.0</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Initial release of plugin</li>
@@ -509,6 +513,7 @@ EOM;
 //	Print out to browser (wp)
 ////////////////////////////////////////////////////////////////////////////
 function cw_daily_quotes_admin_browser($cw_daily_quotes_html,$cw_daily_quotes_action) {
+$cw_plugin_name='cleverwise-daily-quotes';
 print <<<EOM
 <style type="text/css">
 #cws-wrap {margin: 20px 20px 20px 0px;}
@@ -527,7 +532,7 @@ print <<<EOM
 <p style="font-size: 13px; font-weight: bold;">Current: <span style="color: #ab5c23;">$cw_daily_quotes_action</span></p>
 <p>$cw_daily_quotes_html</p>
 <div id="cws-resources" name="cws-resources"><div id="cws-inner" name="cws-inner">Resources (open in new windows):<br>
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7VJ774KB9L9Z4" target="_blank">Donate - Thank You!</a> | <a href="http://wordpress.org/support/plugin/cleverwise-daily-quotes" target="_blank">Get Support</a> | <a href="http://wordpress.org/support/view/plugin-reviews/cleverwise-daily-quotes" target="_blank">Review Plugin</a> | <a href="http://www.cyberws.com/cleverwise-plugins/plugin-suggestion/" target="_blank">Suggest Plugin</a><br>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7VJ774KB9L9Z4" target="_blank">Donate - Thank You!</a> | <a href="http://wordpress.org/support/plugin/$cw_plugin_name" target="_blank">Get Support</a> | <a href="http://wordpress.org/support/view/plugin-reviews/$cw_plugin_name" target="_blank">Review Plugin</a> | <a href="http://www.cyberws.com/cleverwise-plugins/plugin-suggestion/" target="_blank">Suggest Plugin</a><br>
 <a href="http://www.cyberws.com/cleverwise-plugins" target="_blank">Cleverwise Plugins</a> | <a href="http://www.cyberws.com/professional-technical-consulting/" target="_blank">Wordpress +PHP,Server Consulting</a></div></div>
 </div>
 EOM;

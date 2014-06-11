@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.0
+* Version: 1.1
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.0';
+$dq_wp_option_version_num='1.1';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -101,6 +101,7 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 
 	//	Check each quote section
 	if ($dq_daily_quote_titles) {
+		isset($daily_quotes_build);
 		asort($dq_daily_quote_titles);
 		foreach ($dq_daily_quote_titles as $daily_quote_qid => $dq_daily_quote_title) {
 			//	Load category
@@ -160,10 +161,12 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 				$layout_theme=preg_replace('/{{quote_title}}/',$dq_daily_quote_title,$layout_theme);
 				$layout_theme=preg_replace('/{{quote}}/',$qod_quote,$layout_theme);
 
-				//	Display to browser/site
-				print "$layout_theme";
+				//	Add daily quote to build
+				$daily_quotes_build .=$layout_theme;
 			}
 		}
+		//	Display to browser/site
+		return $daily_quotes_build;
 	}
 
 }
