@@ -415,9 +415,13 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.2</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>An easy to use display widget has been added</li>
+</ul>
 <p>Version: <b>1.1</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
-<li>Fixed: Shortcode in certain areas would cause incorrect placement.</li>
+<li>Fixed: Shortcode in certain areas would cause incorrect placement</li>
 </ul>
 <p>Version: <b>1.0</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
@@ -434,7 +438,7 @@ EOM;
 $cw_daily_quotes_html .=<<<EOM
 <div style="margin: 10px 0px 5px 0px; width: 400px; border-bottom: 1px solid #c16a2b; padding-bottom: 5px; font-weight: bold;">Introduction:</div>
 <p>This system allows you to display daily changing information such as quotes/tips/snippets on your Wordpress site.  You have total control over the layout/theme of this information.  There is also no limit to the number of daily sections you may place on your site.  In addition you may set a custom layout/theme for any daily section.  Plus you are able to control which categories a specific daily section will be displayed in when your visitors stop by your site.</p>
-<p>Note: If you place the shortcode to display daily section information in a text widget and it isn't working, then you need to add a filter code.  At the bottom of this guide you will find the code to add to your theme's <b>functions.php</b> file.  Place the code on a new line and save changes.  If necessary upload the file change to your website.</p>
+<p>Note: If you place the shortcode to display daily section information in a text widget and it isn't working, then you need to add a filter code.  At the bottom of this guide you will find the code to add to your theme's <b>functions.php</b> file.  Place the code on a new line and save changes.  If necessary upload the file change to your website.  If you are confused no worries there is an easy to use drag and drop display widget too.</p>
 <p>Steps:</p>
 <ol>
 <li><p>In <b>Settings</b> edit and save the default/general theme/layout.</p></li>
@@ -448,13 +452,19 @@ $cw_daily_quotes_html .=<<<EOM
 </ol>
 </li>
 <li>Now save the daily section, obviously fixing any errors that are displayed.</li>
-<li>Now add the shortcode <b>[cw_daily_quotes]</b> to the area(s) of your Wordpress site (header, footer, widgets, sidebar, post(s), page(s), etc) where you wish the daily sections to be displayed.  Do keep in mind that, by default, Wordpress doesn't process shortcodes in text widgets.  Therefore you will need to add the code below to your <b>functions.php</b> file.</li>
+<li><p>There are two methods to display the daily quote sections.  You may used one or both.</p>
+	<ol>
+	<li><b>Widget method</b>: Visit "Appearance" in your Wordpress admin navigation then "Widgets".  You will find a widget called "Daily Quote Sections" which you may add to the desired section(s)/area(s) of your site.  This is the easiest method.</li>
+	<li><b>Shortcode method</b>: Add the shortcode <b>[cw_daily_quotes]</b> to the area(s) of your Wordpress site (header, footer, widgets, sidebar, post(s), page(s), etc) where you wish the daily sections to be displayed.  Do keep in mind that, by default, Wordpress doesn't process shortcodes in text widgets.  Therefore you will need to add the code below to your <b>functions.php</b> file.  This is the more versatile method.</li>
+	</ol>
+</li>
 <li>Now add and edit additional daily sections as needed.  Do keep in mind categories with multiple daily sections will display them in alphabetical order by section title.</li>
 <li>Optional: This system supports the ability to use the Memcached storage system for optimized daily information loading.  To enable this first verify you have access to Memcached and PHP is setup correctly for this feature; ask your web hosting provider.  Now edit <b>memcached.config.sample.php</b> in the <b>cleverwise-daily-quotes</b> directory in your Wordpress plugins directory.  You'll see two options.  First set the address of the Memcached server.  Second set the port to Memcached, usually the default.  Now save the file as <b>memcached.config.php</b> and upload it to the <b>cleverwise-daily-quotes</b> directory.  To see if it is working load the <b>Main Panel</b> and look at <b>Memcached Status</b>.  It should read "On - optimized quote pulling".  If not check your Memcached settings.  If your Wordpress site displays fatal error don't panic; simply delete <b>memcached.config.php</b> and all will return to normal.  You may try again.  An incorrect Memcached address and/or port won't cause fatal errors, however misediting the file could.</li>
 </ol>
 
 <div style="margin: 10px 0px 5px 0px; width: 400px; border-bottom: 1px solid #c16a2b; padding-bottom: 5px; font-weight: bold;">Text widget filter code for your theme's functions.php:</div>
 add_filter('widget_text', 'do_shortcode');
+<p>Tip: If you only use the Widget display method you may skip the above code.</p>
 EOM;
 
 	////////////////////////////////////////////////////////////////////////////

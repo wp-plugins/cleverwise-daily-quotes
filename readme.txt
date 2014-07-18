@@ -3,8 +3,8 @@ Contributors: cyberws
 Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
-Tested up to: 3.9
-Stable tag: 1.1
+Tested up to: 3.9.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,8 @@ Adds daily quotes (tips, snippets, etc) sections with the ability to choose the 
 
 <p>Shameless Promotion: See other <a href="http://wordpress.org/plugins/search.php?q=cleverwise">Cleverwise Wordpress Directory Plugins</a></p>
 
+<p>Thanks for looking at the Cleverwise Plugin Series! To help out the community reviews and comments are highly encouraged.  If you can't leave a good review I would greatly appreciate opening a support thread before hand to see if I can address your concern(s).  Enjoy!</p>
+
 == Installation ==
 
 <ol>
@@ -67,13 +69,16 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.2 =
+An easy to use display widget has been added
+
 = 1.1 =
-Fixed: Shortcode in certain areas would cause incorrect placement.
+Fixed: Shortcode in certain areas would cause incorrect placement
 
 = 1.0 =
 Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.1 =
-Plugin should no longer display at top of page when shortcode is located elsewhere.
+= 1.2 =
+An easy to use display widget has been added

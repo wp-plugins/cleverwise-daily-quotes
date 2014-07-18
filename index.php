@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.1
+* Version: 1.2
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.1';
+$dq_wp_option_version_num='1.2';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -66,6 +66,13 @@ if (is_admin()) {
 //	Register shortcut to display visitor side
 ////////////////////////////////////////////////////////////////////////////
 add_shortcode('cw_daily_quotes', 'cw_daily_quotes_vside');
+
+////////////////////////////////////////////////////////////////////////////
+//	Register Widget
+////////////////////////////////////////////////////////////////////////////
+add_action('widgets_init',
+     create_function('', 'return register_widget("cw_dq_widget");')
+);
 
 ////////////////////////////////////////////////////////////////////////////
 //	Visitor Display
@@ -169,4 +176,52 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 		return $daily_quotes_build;
 	}
 
+}
+
+////////////////////////////////////////////////////////////////////////////
+//	Widget Logic
+////////////////////////////////////////////////////////////////////////////
+class cw_dq_widget extends WP_Widget {
+
+	/**
+	 * Sets up the widgets name etc
+	 */
+	public function __construct() {
+		/* Widget settings. */
+		parent::__construct(
+			'cw_dq_widget', // Base ID
+			__('Daily Quote Sections', 'text_domain'), // Name
+			array( 'description'=>__('This will display your daily quote sections.', 'text_domain'),) // Args
+		);
+	}
+
+	/**
+	 * Outputs the content of the widget
+	 *
+	 * @param array $args
+	 * @param array $instance
+	 */
+	public function widget($args,$instance) {
+		$cw_daily_quotes_widget_html=cw_daily_quotes_vside();
+		print $cw_daily_quotes_widget_html;
+	}
+
+	/**
+	 * Outputs the options form on admin
+	 *
+	 * @param array $instance The widget options
+	 */
+	public function form($instance) {
+		// outputs the options form on admin
+	}
+
+	/**
+	 * Processing widget options on save
+	 *
+	 * @param array $new_instance The new options
+	 * @param array $old_instance The previous options
+	 */
+	public function update($new_instance, $old_instance) {
+		// processes widget options to be saved
+	}
 }
