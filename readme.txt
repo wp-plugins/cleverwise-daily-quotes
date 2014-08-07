@@ -3,8 +3,8 @@ Contributors: cyberws
 Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
-Tested up to: 3.9.1
-Stable tag: 1.2
+Tested up to: 3.9.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,11 +24,13 @@ Adds daily quotes (tips, snippets, etc) sections with the ability to choose the 
 
 <p>For starters there are no limits, short of your hosting infrastructure, to the number of daily quote sections.  You aren't locked into a single (one) daily quote section.  Nope not at all.  Want five? Great! Ten? Awesome! 50? You are a daily quote machine.  300?! You are a daily quote section god!</p>
 
-<p>Now you are probably wondering but what if I only want a specific daily quote section to be displayed on a certain category? That's easy! Can you click a mouse? Sure you got to this page.  That is how easy it is to accomplish.  When setting up (or editing) a quote section the plugin will display your category list and you simply check the boxes for each category you wish those daily quotes to appear in.  That could be one category or 50 categories (assuming you had 50).</p>
+<p>Now you are probably wondering but what if I only want a specific daily quote section to be displayed on a certain category? That's easy! Can you click a mouse? Sure you got to this page.  That is how easy it is to accomplish.  When setting up (or editing) a quote section the plugin will display your WordPress category list and you simply check the boxes for each category you wish those daily quotes to appear in.  That could be one category or 50 categories (assuming you had 50).</p>
 
-<p>I know your next question! Yes there is a display in all categories (single click) option. However there is another display option which is to skip certain categories.  So you have three options to display a daily section which are in all your categories, exclude specific categories and display in rest, or include specific categories and skip the rest.</p>
+<p>I know your next question! Yes there is a display in all categories (single click) option. However there is another display option which is to skip certain categories.  So you have three options to display a daily section which are in all your categories, exclude specific categories and display in rest, or include specific categories and skip the rest.  Wait! Before we move on there is really a fourth option which is hide/turn off.  This way you can keep a daily section in your database but prevent it from displaying on your site.</p>
 
-<p>Also there is no limit to the number of daily quotes per category.  You could have a category with one and another category with 10.  Its totally up to you and changeable at any time.  When a category has multiple quote sections it will display them in alphabetical order based on the daily section title.  If a post is assigned to multiple categories the first category is the one used.</p>
+<p>Also there is no limit to the number of daily quotes per category.  You could have a category with one and another category with 10.  Its totally up to you and changeable at any time.  When a category has multiple quote sections the plugin will display them in alphabetical order based on the daily section title.  If a post is assigned to multiple categories the first category is the one used.</p>
+
+<p>You may be thinking what about static pages? You know the non post kind?  WordPress doesn't use categories for pages, well not in the same way as it does for posts.  The good news is this plugin has you covered! You are able to load a specific daily section using a special shortcode, provided by the system, that you insert into the page. When you combine this technique with the display hide/off for the daily section then the information will only appear on that static page! Oh yeah there is no limit on the number of specific daily section shortcodes that may be added to a page.</p>
 
 <p>This plugin has a default/general quote layout/theme.  You are able to easily edit this theme to fit your site's design.  However it isn't one theme and done; nope.  Every daily quote section has the option for its own custom theme.  That way if you want a specific quote section to be themed differently no problem.  Therefore if you had ten quote sections seven may use the default/general one and the three others use custom layouts unique to them.  Another advantage to this design is you could use the same quote information and setup multiple sections and theme them differently.  This allows you to display the same information in different ways for different areas/categories of your site.</p>
 
@@ -69,6 +71,11 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.3 =
+Ability to hide/turn off daily sections<br>
+Added link to WordPress category area for easier management<br>
+Shortcode support to directly load a daily section; useful for pages
+
 = 1.2 =
 An easy to use display widget has been added
 
@@ -80,5 +87,5 @@ Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.2 =
-An easy to use display widget has been added
+= 1.3 =
+New features include ability to hide daily sections and directly load them via a special shortcode.

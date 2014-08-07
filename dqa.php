@@ -27,7 +27,7 @@ function cw_daily_quotes_aside_mn() {
 //	Load admin functions
 ////////////////////////////////////////////////////////////////////////////
 function cw_daily_quotes_aside() {
-Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$cwfa_dq,$dq_memcached,$dq_memcached_conn;
+Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$cw_posts_tbl,$cwfa_dq,$dq_memcached,$dq_memcached_conn;
 
 	////////////////////////////////////////////////////////////////////////////
 	//	Load options for plugin
@@ -97,7 +97,8 @@ EOM;
 		$quotes='';
 		$qcats='';
 		$qlayout='';
-
+		$ds_shortcode='';
+		
 		$cw_daily_quotes_action_btn='Add';
 		if ($cw_action == 'quoteedit') {
 			$qod_sid=$qid;
@@ -119,7 +120,7 @@ EOM;
 
 		//	Display Types
 		$cw_qtypes_layout='<input type="radio" name="qtype" value="%s"%s> %s ';
-		$quote_types=array('a'=>'All categories','e'=>'Exclude the following categories','i'=>'Include the following categories');
+		$quote_types=array('a'=>'All categories','e'=>'Exclude the following categories (don\'t show in)','i'=>'Include the following categories (show in)','n'=>'No categories (hide/off)');
 		foreach ($quote_types as $quote_type_id => $quote_type_name) {
 			$wpcheck='';
 			if ($qtype == $quote_type_id) {
@@ -148,6 +149,9 @@ EOM;
 
 		$cw_daily_quotes_action=$cw_daily_quotes_action_btn.'ing Quote Section';
 		$cw_action .='sv';
+		
+		$cw_category_url=admin_url('edit-tags.php?taxonomy=category');
+		
 $cw_daily_quotes_html .=<<<EOM
 <form method="post">
 <input type="hidden" name="cw_action" value="$cw_action">
@@ -157,9 +161,30 @@ $cw_daily_quotes_html .=<<<EOM
 <p><textarea name="quotes" style="width: 400px; height: 250px;">$quotes</textarea></p>
 <p>Where should this daily section be displayed?</p>
 <p>$qtypes</p>
-<p>Categories:<br>$categories</p>
+<p>Your WordPress Categories: [<a href="$cw_category_url">Manage Categories</a>]</p><p>$categories</p>
 <p>Custom Layout: <div style="margin-left: 20px;">Optional: This is the layout/theme/style that will be used instead of the general layout.  Leave blank to use general layout.<br><br><b>{{quote_title}}</b> = Display Quote Title<br><b>{{quote}}</b> = Display Daily Quote</div></p>
 <p><textarea name="qlayout" style="width: 400px; height: 200px;">$qlayout</textarea></p>
+EOM;
+
+		if ($cw_action == 'quoteeditsv') {
+$cw_daily_quotes_html .=<<<EOM
+<p>Daily Section Shortcode: <div style="margin-left: 20px;">Optional: The following shortcode will display this daily section, which is very useful for pages (not limited to only pages).  You should keep in mind that the shortcode will always show this daily section as the where to display setting has no influence.<br><br>[cw_daily_quotes cw_ds_id="$qid"]</div></p>
+EOM;
+			//	Display pages using shortcode:
+			$myrows=$wpdb->get_results("SELECT post_title FROM $cw_posts_tbl where post_content like '%[cw_daily_quotes cw_ds_id%$qid%]%' group by post_title");
+			if ($myrows) {
+				$cw_sc_cnt='1';
+				foreach ($myrows as $myrow) {
+					$post_title=stripslashes($myrow->post_title);
+					$post_list .='<b style="margin-left: 20px;">'.$cw_sc_cnt.'</b>) '.$post_title.'<br>';
+					$cw_sc_cnt++;
+				}
+				$cw_sc_cnt--;
+				$cw_daily_quotes_html .='<p style="margin-left: 20px;">'.$cw_sc_cnt.' page(s)/post(s) currently use this shortcode:<br><i>'.$post_list.'</i></p>';
+			}
+		}
+
+$cw_daily_quotes_html .=<<<EOM
 <p><input type="submit" value="$cw_daily_quotes_action_btn" class="button"> &#171;&#171; Please be patient!</p>
 </form>
 EOM;
@@ -415,6 +440,12 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.3</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Ability to hide/turn off daily sections</li>
+<li>Added link to WordPress category area for easier management</li>
+<li>Shortcode support to directly load a daily section; useful for pages</li>
+</ul>
 <p>Version: <b>1.2</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>An easy to use display widget has been added</li>
@@ -452,10 +483,11 @@ $cw_daily_quotes_html .=<<<EOM
 </ol>
 </li>
 <li>Now save the daily section, obviously fixing any errors that are displayed.</li>
-<li><p>There are two methods to display the daily quote sections.  You may used one or both.</p>
+<li><p>There are three methods to display the daily quote sections.  You may use one, two, or all methods.</p>
 	<ol>
 	<li><b>Widget method</b>: Visit "Appearance" in your Wordpress admin navigation then "Widgets".  You will find a widget called "Daily Quote Sections" which you may add to the desired section(s)/area(s) of your site.  This is the easiest method.</li>
-	<li><b>Shortcode method</b>: Add the shortcode <b>[cw_daily_quotes]</b> to the area(s) of your Wordpress site (header, footer, widgets, sidebar, post(s), page(s), etc) where you wish the daily sections to be displayed.  Do keep in mind that, by default, Wordpress doesn't process shortcodes in text widgets.  Therefore you will need to add the code below to your <b>functions.php</b> file.  This is the more versatile method.</li>
+	<li><b>General Shortcode method</b>: Add the general shortcode <b>[cw_daily_quotes]</b> to the area(s) of your Wordpress site (header, footer, widgets, sidebar, post(s), page(s), etc) where you wish the daily sections to be displayed.  This will display all daily sections for your various categories.  Do keep in mind that, by default, Wordpress doesn't process shortcodes in text widgets.  Therefore you will need to add the code below to your <b>functions.php</b> file.  This is the most versatile method and will automatically display ALL daily sections when appropriate.</li>
+	<li><b>Direct Shortcode method</b>: Add the special daily section shortcode, provided in the edit section area, to display that specific section in a specific area on your site.  This could be a page, post, header, footer, sidebar, etc.  You may repeat a direct shortcode multiple times on your site.  This method is NOT category specific.  Do keep in mind that, by default, Wordpress doesn't process shortcodes in text widgets.  Therefore you will need to add the code below to your <b>functions.php</b> file.  This is the most detailed method as it will ONLY display ONE daily section per direct shortcode placement.</li>
 	</ol>
 </li>
 <li>Now add and edit additional daily sections as needed.  Do keep in mind categories with multiple daily sections will display them in alphabetical order by section title.</li>

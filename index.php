@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.2
+* Version: 1.3
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.2';
+$dq_wp_option_version_num='1.3';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -30,6 +30,7 @@ Global $cw_daily_quotes_tbl;
 
 $wp_db_prefix=$wpdb->prefix;
 $cw_daily_quotes_tbl=$wp_db_prefix.'daily_quotes';
+$cw_posts_tbl=$wp_db_prefix.'posts';
 
 ////////////////////////////////////////////////////////////////////////////
 //	Memcache Support
@@ -77,7 +78,7 @@ add_action('widgets_init',
 ////////////////////////////////////////////////////////////////////////////
 //	Visitor Display
 ////////////////////////////////////////////////////////////////////////////
-function cw_daily_quotes_vside() {
+function cw_daily_quotes_vside($atts) {
 Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn;
 
 	////////////////////////////////////////////////////////////////////////////
@@ -90,12 +91,20 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 	//	Load current day
 	////////////////////////////////////////////////////////////////////////////
 	$curday=date('z');
-
+	
 	////////////////////////////////////////////////////////////////////////////
 	//	Load current category
 	////////////////////////////////////////////////////////////////////////////
 	$wpcategory=get_the_category($post->ID);
 	$wpcurcat=$wpcategory[0]->term_id.'|';
+	
+	////////////////////////////////////////////////////////////////////////////
+	//	Check for section id attribute
+	////////////////////////////////////////////////////////////////////////////
+	$cw_ds_id='0';
+	if (isset($atts[cw_ds_id])) {
+		$cw_ds_id=$atts[cw_ds_id];
+	}
 
 	////////////////////////////////////////////////////////////////////////////
 	//	Display necessary quote sections
@@ -104,12 +113,18 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 	$dq_daily_quote_layout=stripslashes($dq_wp_option_array['layout']);
 
 	// 	Load quote titles
-	$dq_daily_quote_titles=$dq_wp_option_array['section_titles'];
+	if ($cw_ds_id > '0') {
+		$dq_daily_quote_titles=array();
+			$dq_daily_quote_titles[$cw_ds_id]=$dq_wp_option_array['section_titles'][$cw_ds_id];
+	} else {
+		$dq_daily_quote_titles=$dq_wp_option_array['section_titles'];
+	}
 
 	//	Check each quote section
-	if ($dq_daily_quote_titles) {
+	if (isset($dq_daily_quote_titles)) {
 		isset($daily_quotes_build);
 		asort($dq_daily_quote_titles);
+			
 		foreach ($dq_daily_quote_titles as $daily_quote_qid => $dq_daily_quote_title) {
 			//	Load category
 			$daily_quote_qcats=$dq_wp_option_array['section_categories'][$daily_quote_qid];
@@ -119,7 +134,7 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 			$dq_daily_section_type=$dq_wp_option_array['section_types'][$daily_quote_qid];
 
 			//	Display quote check
-			$dq_daily_section_display='';
+			$dq_daily_section_display='off';
 			if ($dq_daily_section_type == 'a') {
 				$dq_daily_section_display='on';
 			} elseif ($dq_daily_section_type == 'e' and substr_count($daily_quote_qcats,"$wpcurcat") == '0') {
@@ -129,7 +144,12 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 			} else {
 				$dq_daily_section_display='off';
 			}
-
+			
+			// 	Override display setting if direct section id call
+			if ($cw_ds_id > '0') {
+				$dq_daily_section_display='on';
+			}
+			
 			//	Display quote
 			if ($dq_daily_section_display == 'on') {
 				//	Grab quote
@@ -156,20 +176,20 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 					foreach ($myrows as $myrow) {
 						$qod_quote=stripslashes($myrow->qod_quote);
 					}
+				
+					$layout_theme=$dq_daily_quote_layout;
+					//	If custom theme over default
+					if (strlen($dq_wp_option_array['section_layouts'][$daily_quote_qid]) > '1') {
+						$layout_theme=stripslashes($dq_wp_option_array['section_layouts'][$daily_quote_qid]);
+					}
+
+					//	Load quote section title and quote into theme
+					$layout_theme=preg_replace('/{{quote_title}}/',$dq_daily_quote_title,$layout_theme);
+					$layout_theme=preg_replace('/{{quote}}/',$qod_quote,$layout_theme);
+
+					//	Add daily quote to build
+					$daily_quotes_build .=$layout_theme;
 				}
-
-				$layout_theme=$dq_daily_quote_layout;
-				//	If custom theme over default
-				if (strlen($dq_wp_option_array['section_layouts'][$daily_quote_qid]) > '1') {
-					$layout_theme=stripslashes($dq_wp_option_array['section_layouts'][$daily_quote_qid]);
-				}
-
-				//	Load quote section title and quote into theme
-				$layout_theme=preg_replace('/{{quote_title}}/',$dq_daily_quote_title,$layout_theme);
-				$layout_theme=preg_replace('/{{quote}}/',$qod_quote,$layout_theme);
-
-				//	Add daily quote to build
-				$daily_quotes_build .=$layout_theme;
 			}
 		}
 		//	Display to browser/site
