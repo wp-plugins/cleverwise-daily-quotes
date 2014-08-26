@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.3
+* Version: 1.4
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.3';
+$dq_wp_option_version_num='1.4';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -86,6 +86,11 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 	////////////////////////////////////////////////////////////////////////////
 	$dq_wp_option_array=get_option($dq_wp_option);
 	$dq_wp_option_array=unserialize($dq_wp_option_array);
+	
+	////////////////////////////////////////////////////////////////////////////
+	//	Set variables
+	////////////////////////////////////////////////////////////////////////////
+	$daily_quotes_build='';
 
 	////////////////////////////////////////////////////////////////////////////
 	//	Load current day
@@ -95,15 +100,17 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 	////////////////////////////////////////////////////////////////////////////
 	//	Load current category
 	////////////////////////////////////////////////////////////////////////////
-	$wpcategory=get_the_category($post->ID);
-	$wpcurcat=$wpcategory[0]->term_id.'|';
+	if (isset($post->ID)) {
+		$wpcategory=get_the_category($post->ID);
+		$wpcurcat=$wpcategory[0]->term_id.'|';
+	}
 	
 	////////////////////////////////////////////////////////////////////////////
 	//	Check for section id attribute
 	////////////////////////////////////////////////////////////////////////////
 	$cw_ds_id='0';
-	if (isset($atts[cw_ds_id])) {
-		$cw_ds_id=$atts[cw_ds_id];
+	if (isset($atts['cw_ds_id'])) {
+		$cw_ds_id=$atts['cw_ds_id'];
 	}
 
 	////////////////////////////////////////////////////////////////////////////
@@ -222,7 +229,8 @@ class cw_dq_widget extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget($args,$instance) {
-		$cw_daily_quotes_widget_html=cw_daily_quotes_vside();
+		Global $atts;
+		$cw_daily_quotes_widget_html=cw_daily_quotes_vside($atts);
 		print $cw_daily_quotes_widget_html;
 	}
 

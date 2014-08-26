@@ -4,7 +4,7 @@ Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
 Tested up to: 3.9.2
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.4 =
+Added ability to check daily content for day count<br>
+Background edits to eliminate some PHP notice messages
+
 = 1.3 =
 Ability to hide/turn off daily sections<br>
 Added link to WordPress category area for easier management<br>
@@ -87,5 +91,5 @@ Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.3 =
-New features include ability to hide daily sections and directly load them via a special shortcode.
+= 1.4 =
+Added ability to check day count of daily content before adding.

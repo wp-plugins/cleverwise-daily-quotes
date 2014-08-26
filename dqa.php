@@ -56,6 +56,7 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$cw_posts_tbl,$cwfa_dq,$dq_memca
 	$cw_daily_quotes_html='';
 
 	//	Default Layout
+$daily_quotes_layout_def='';
 $daily_quotes_layout_def .=<<<EOM
 <div style="width: 296px; padding: 0px; margin: 0px; border: 1px solid #000000; background-color: #000000; color: #ffffff; font-family: tahoma; font-size: 14px; font-weight: bold; text-align: center; -moz-border-radius: 5px 5px 0px 0px; border-radius: 5px 5px 0px 0px;"><div style="padding: 1px;">{{quote_title}}</div></div>
 <div style="width: 296px; padding: 0px; margin-bottom: 10px; border: 1px solid #000000; border-top: 0px; font-family: tahoma; color: #000000; -moz-border-radius: 0px 0px 5px 5px; border-radius: 0px 0px 5px 5px;"><div style="padding: 5px;">{{quote}}</div></div>
@@ -71,6 +72,7 @@ EOM;
 
 		$cw_daily_quotes_action='Viewing Quotes';
 
+		$quotes='';
 		if ($qod_sid > '0') {
 			$myrows=$wpdb->get_results("SELECT qod_quote FROM $cw_daily_quotes_tbl where qod_sid='$qod_sid'");
 			if ($myrows) {
@@ -86,6 +88,37 @@ EOM;
 $cw_daily_quotes_html .=<<<EOM
 <p>Quote Section: <b>$qtitle</b>  .:. <a href="?page=cw-daily-quotes&cw_action=quoteedit&qid=$qid">Edit</a></p>
 $quotes
+EOM;
+
+	////////////////////////////////////////////////////////////////////////////
+	//	Content Check
+	////////////////////////////////////////////////////////////////////////////
+	} elseif ($cw_action == 'contentcheck') {
+		$quotes='';
+		if (isset($_REQUEST['quotes'])) {
+			$quotes=trim($_REQUEST['quotes']);
+		}
+		$quotebuild='';
+		$cw_daily_quotes_action='Content Day Check';
+
+		if ($quotes) {
+			$quotes=preg_replace('/\r/','',$quotes);
+			$quotes_cnt=substr_count($quotes,"\n");
+			if ($quotes_cnt > '0') {
+				$quotes=explode("\n",$quotes);
+				$quotenum='0';
+				foreach ($quotes as $quote) {
+					$quotenum++;
+					$quotebuild .='<div style="width: 400px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #000000;">Day '.$quotenum.') '.$quote.'</div>';
+				}
+				$quotebuild="<p>Number Of Days: $quotenum</p>$quotebuild";
+			}
+		} else {
+			$quotebuild='<form method="post"><input type="hidden" name="action" value="contentcheck"><p><textarea name="quotes" style="width: 400px; height: 250px;"></textarea></p><input type="submit" value="Go"></form>';
+		}
+
+$cw_daily_quotes_html .=<<<EOM
+$quotebuild
 EOM;
 
 	////////////////////////////////////////////////////////////////////////////
@@ -121,6 +154,7 @@ EOM;
 		//	Display Types
 		$cw_qtypes_layout='<input type="radio" name="qtype" value="%s"%s> %s ';
 		$quote_types=array('a'=>'All categories','e'=>'Exclude the following categories (don\'t show in)','i'=>'Include the following categories (show in)','n'=>'No categories (hide/off)');
+		$qtypes='';
 		foreach ($quote_types as $quote_type_id => $quote_type_name) {
 			$wpcheck='';
 			if ($qtype == $quote_type_id) {
@@ -134,6 +168,7 @@ EOM;
 		$cw_category_layout='<input type="checkbox" name="qcategories[]" value="%s"%s> %s ';
 		$args=array('orderby'=>'name','order'=>'ASC');
 		$wp_categories=get_categories($args);
+		$categories='';
 		foreach ($wp_categories as $wp_category) {
 			$wp_cat_data=$wp_category;
 			$wpcatid=$wp_cat_data->term_id;
@@ -174,6 +209,7 @@ EOM;
 			$myrows=$wpdb->get_results("SELECT post_title FROM $cw_posts_tbl where post_content like '%[cw_daily_quotes cw_ds_id%$qid%]%' group by post_title");
 			if ($myrows) {
 				$cw_sc_cnt='1';
+				$post_list='';
 				foreach ($myrows as $myrow) {
 					$post_title=stripslashes($myrow->post_title);
 					$post_list .='<b style="margin-left: 20px;">'.$cw_sc_cnt.'</b>) '.$post_title.'<br>';
@@ -440,6 +476,11 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.4</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Added ability to check daily content for day count</li>
+<li>Eliminated some PHP notice messages</li>
+</ul>
 <p>Version: <b>1.3</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Ability to hide/turn off daily sections</li>
@@ -538,7 +579,8 @@ EOM;
 $cw_daily_quotes_action='Main Panel';
 $cw_daily_quotes_html .=<<<EOM
 <p><b>Daily Quote Sections:</b> $dcnt<br>
-<a href="?page=cw-daily-quotes&cw_action=quoteadd">Add New Section</a></p>
+<a href="?page=cw-daily-quotes&cw_action=quoteadd">Add New Section</a> | <a href="?page=cw-daily-quotes&cw_action=contentcheck">Content Day Check</a></p>
+<p>Note: Custom daily shortcode and pages currently using said code are available on the edit screen.</p>
 $daily_sections
 <p style="width: 400px; margin-top: 20px; padding-top: 10px; border-top: 1px dashed #000000;">Current Day Count: $current_day</p>
 <p>Memcached Status: $dq_memcached_chk</p>
