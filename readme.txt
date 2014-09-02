@@ -92,4 +92,4 @@ Initial release of plugin
 == Upgrade Notice ==
 
 = 1.4 =
-Added ability to check day count of daily content before adding.
+Added the ability to check day count of daily content before adding.
