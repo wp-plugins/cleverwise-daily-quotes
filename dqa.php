@@ -114,7 +114,7 @@ EOM;
 				$quotebuild="<p>Number Of Days: $quotenum</p>$quotebuild";
 			}
 		} else {
-			$quotebuild='<form method="post"><input type="hidden" name="action" value="contentcheck"><p><textarea name="quotes" style="width: 400px; height: 250px;"></textarea></p><input type="submit" value="Go"></form>';
+			$quotebuild='<p>Enter your daily content to see how the plugin will separate it into the various days.</p><form method="post"><input type="hidden" name="action" value="contentcheck"><p><textarea name="quotes" style="width: 400px; height: 250px;"></textarea></p><input type="submit" value="Go"></form>';
 		}
 
 $cw_daily_quotes_html .=<<<EOM
@@ -192,7 +192,9 @@ $cw_daily_quotes_html .=<<<EOM
 <input type="hidden" name="cw_action" value="$cw_action">
 <input type="hidden" name="qid" value="$qid">
 <p>Quote Title: <input type="text" name="qtitle" value="$qtitle" style="width: 400px;"></p>
-<p>366 Daily Quotes - HTML Markup Supported: (Enter a line break between days)</p>
+<p>366 Daily Quotes - HTML Markup Supported: (Place an enter/return between each daily content)
+<div style="margin: 0px 0px 10px 20px;">If you don't have 366 days worth of content ready you may tell the system to reuse available content to finish missing days.  You will need at least ten (10) days worth for this option.</div>
+<div style="margin-left: 20px;"><input type="checkbox" name="qcntoride" value='1'> Check if you don't have 366 days of content</div></p>
 <p><textarea name="quotes" style="width: 400px; height: 250px;">$quotes</textarea></p>
 <p>Where should this daily section be displayed?</p>
 <p>$qtypes</p>
@@ -253,6 +255,7 @@ EOM;
 		$qtype=$cwfa_dq->cwf_san_an($_REQUEST['qtype']);
 		$qcategories=$_REQUEST['qcategories'];
 		$qlayout=trim($_REQUEST['qlayout']);
+		$qcntoride=$cwfa_dq->cwf_san_int($_REQUEST['qcntoride']);
 
 		$error='';
 
@@ -261,8 +264,27 @@ EOM;
 		}
 
 		$quotes=preg_replace('/\r/','',$quotes);
-		if (substr_count($quotes,"\n") != '365') {
-			$error .='<li>Need 366 Daily Quotes</li>';
+		$quote_count='0';
+		if (substr_count($quotes,"\n")) {
+			$quotes=explode("\n",$quotes);
+			$quote_count=count($quotes);
+		}
+		if ($quote_count != '366') {
+			if ($quote_count > '9' and $qcntoride == '1') {
+				$quotecontent=$quotes;
+				$qsnum=$quote_count;
+				$qi='0';
+				while ($quote_count < '366') {
+					$quote_count++;
+					array_push($quotes,$quotecontent[$qi]);
+					$qi++;
+					if ($qsnum <= $qi) {
+						$qi='0';
+					}
+				}
+			} else {
+				$error .='<li>Need 366 Daily Quotes</li>';
+			}
 		}
 
 		if (!$qtype) {
@@ -282,7 +304,7 @@ EOM;
 
 		if ($error) {
 			$cw_daily_quotes_action='Error';
-			$cw_daily_quotes_html='Please fix the following in order to save settings:<br><ul style="list-style: disc; margin-left: 25px;">'. $error .'</ul>'.$pplink;
+			$cw_daily_quotes_html='Please fix the following in order to save daily information:<br><ul style="list-style: disc; margin-left: 25px;">'. $error .'</ul>'.$pplink;
 		} else {
 			$cw_daily_quotes_action='Success';
 
@@ -329,12 +351,12 @@ EOM;
 			}
 
 			//	Save quotes
-			$quotes=explode("\n",$quotes);
 			$qod_day='0';
-
 			foreach ($quotes as $qod_quote) {
 				$data=array();
-				$data['qod_quote']=$qod_quote;
+				if ($qod_day < '366') {
+					$data['qod_quote']=$qod_quote;
+				}
 			
 				if ($cw_action == 'quoteeditsv') {
 					$where=array();
@@ -476,10 +498,14 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.5</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Plugin can now easily add missing daily content to reach 366 days</li>
+</ul>
 <p>Version: <b>1.4</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Added ability to check daily content for day count</li>
-<li>Eliminated some PHP notice messages</li>
+<li>Background edits to eliminate some PHP notice messages</li>
 </ul>
 <p>Version: <b>1.3</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
@@ -518,7 +544,7 @@ $cw_daily_quotes_html .=<<<EOM
 <li><p>There are four pieces of information when adding a daily section:</p>
 <ol>
 <li>Choose a daily section title.  This will be shown to your visitors unless you remove the daily title token.  When multiple daily sections are to be displayed this title will be used in determining the alphabetical order.</li>
-<li>Enter 366 daily pieces of information separated by enter (line break).  This is where you enter your quotes/tips/snippets.  So quote 1 enter quote 2 enter quote 3, etc.  Why 366? This covers leap years, thus the last item will only be shown on those years.</li>
+<li>Enter 366 daily pieces of information separated by enter (line break).  This is where you enter your quotes/tips/snippets.  So quote 1 enter quote 2 enter quote 3, etc.  Why 366? This covers leap years, thus the last item will only be shown on those years.  If you don't have 366 daily pieces of content ready no problem as there is an option to have the system complete the missing days for you.</li>
 <li>Choose where you want the daily section to appear and if necessary the corresponding categories.  If a post is assigned to multiple categories the first category will be used.  In addition if all categories is selected the daily section will automatically appear in any new categories added to Wordpress.</li>
 <li>You may set an unique theme/layout for this daily section.  If left blank the default/general theme in <b>Settings</b> will be used.</li>
 </ol>
