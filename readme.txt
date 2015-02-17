@@ -4,7 +4,7 @@ Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1.5
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,9 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.6 =
+Day change now based on Wordpress Timezone setting
+
 = 1.5 =
 Plugin can now easily add missing daily content to reach 366 days
 
@@ -94,5 +97,5 @@ Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.5 =
-Easily build 366 days of content when you have less
+= 1.6 =
+Day change now based on your Wordpress' Timezone setting

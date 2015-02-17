@@ -498,6 +498,10 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.6</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Day change now based on Wordpress Timezone setting</li>
+</ul>
 <p>Version: <b>1.5</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Plugin can now easily add missing daily content to reach 366 days</li>
@@ -571,8 +575,9 @@ EOM;
 	////////////////////////////////////////////////////////////////////////////
 	} else {
 		// Current day
-		$current_day=date('z')+1;
-
+		$current_day=current_time('z');
+		$current_day++;
+		
 		// Get daily quote sections
 		$daily_sections='';
 
