@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.6
+* Version: 1.7
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.6';
+$dq_wp_option_version_num='1.7';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -100,8 +100,9 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 	////////////////////////////////////////////////////////////////////////////
 	//	Load current category
 	////////////////////////////////////////////////////////////////////////////
-	if (isset($post->ID)) {
-		$wpcategory=get_the_category($post->ID);
+	$wp_post_id=get_the_ID();
+	if (isset($wp_post_id)) {
+		$wpcategory=get_the_category($wp_post_id);
 		$wpcurcat=$wpcategory[0]->term_id.'|';
 	}
 	
@@ -135,6 +136,9 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 		foreach ($dq_daily_quote_titles as $daily_quote_qid => $dq_daily_quote_title) {
 			//	Load category
 			$daily_quote_qcats=$dq_wp_option_array['section_categories'][$daily_quote_qid];
+			if (!$daily_quote_qcats) {
+				$daily_quote_qcats='skip|';
+			}
 			$dq_daily_quote_title=stripslashes($dq_daily_quote_title);
 
 			// 	Load quote type
@@ -161,7 +165,8 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 			if ($dq_daily_section_display == 'on') {
 				//	Grab quote
 				$db_statement="SELECT qod_quote FROM $cw_daily_quotes_tbl where qod_sid='$daily_quote_qid' and qod_day='$curday'";
-
+				$myrows='';
+				
 				//	Memcached - Load data from key
 				if ($dq_memcached == 'on') {
 					$memcache_key=home_url().'-'.$daily_quote_qid.'-'.$curday;
@@ -193,7 +198,8 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 					//	Load quote section title and quote into theme
 					$layout_theme=preg_replace('/{{quote_title}}/',$dq_daily_quote_title,$layout_theme);
 					$layout_theme=preg_replace('/{{quote}}/',$qod_quote,$layout_theme);
-
+					$qod_quote='';
+					
 					//	Add daily quote to build
 					$daily_quotes_build .=$layout_theme;
 				}

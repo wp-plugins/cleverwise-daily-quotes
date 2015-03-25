@@ -4,7 +4,7 @@ Donate link: http://www.cyberws.com/cleverwise-plugins/
 Tags: quotes, quote, daily, tip, tips, snippets, snippet, rotate, dynamic, content, daily
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 1.6
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,10 @@ Yes! If you use a Wordpress caching plugin it should help with reducing database
 
 == Changelog ==
 
+= 1.7 =
+Fixed: Display bug when multiple daily sections where shown
+Fixed: PHP error message when missing section ids
+
 = 1.6 =
 Day change now based on Wordpress Timezone setting
 
@@ -97,5 +101,5 @@ Initial release of plugin
 
 == Upgrade Notice ==
 
-= 1.6 =
-Day change now based on your Wordpress' Timezone setting
+= 1.7 =
+Correctly displays multiple daily content section information

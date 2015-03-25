@@ -2,6 +2,7 @@
 /*
 * Copyright 2014 Jeremy O'Connell  (email : cwplugins@cyberws.com)
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
+* Version 1.3
 */
 	
 ////////////////////////////////////////////////////////////////////////////
@@ -58,17 +59,18 @@ class cwfa_dq {
 	}
 	
 	//	Alphanumeric with spaces, line returns, pipe
-	//	v: 1.0
+	//	v: 1.3 - Updated for hyphen (1.0 orig)
 	function cwf_san_ansrp($value) {
-		$value=preg_replace('/[^a-zA-Z0-9|\n ]/','',$value);
+		$value=preg_replace('/[^a-zA-Z0-9|\n\- ]/','',$value);
 		$value=trim($value);
 		return $value;
 	}
 	
 	//	URL
-	//	v: 1.0
+	//	v: 1.3 - Updated for tilde (1.0 orig)
 	function cwf_san_url($value) {
 		$value=trim($value);
+		$value=preg_replace('/\~/','%7e',$value);
 		$value=preg_replace('/[^a-zA-Z0-9!@#\$%^&*()+<>,:;.?{}\/|_\- ]/','',$value);
 		$value=preg_replace('/\s/','%20',$value);
 		return $value;
@@ -146,6 +148,13 @@ class cwfa_dq {
 	//	v: 1.1
 	function cwf_fmt_sth($value) {
 		$value=preg_replace('/\s/','-',$value);
+		return $value;
+	}
+
+	//	Stripe slashes and trim
+	//	v: 1.2
+	function cwf_fmt_striptrim($value) {
+		$value=trim(stripslashes($value));
 		return $value;
 	}
 	

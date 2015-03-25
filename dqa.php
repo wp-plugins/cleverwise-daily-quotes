@@ -498,6 +498,11 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.7</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Fixed: Display bug when multiple daily sections where shown</li>
+<li>Fixed: PHP error message when missing section ids</li>
+</ul>
 <p>Version: <b>1.6</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Day change now based on Wordpress Timezone setting</li>
