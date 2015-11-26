@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Cleverwise Daily Quotes
 * Description: Adds daily quotes (tips, snippets, etc) sections with the ability to choose the categories.  Plus total control of themes and layouts.
-* Version: 1.7
+* Version: 1.8
 * Author: Jeremy O'Connell
 * Author URI: http://www.cyberws.com/cleverwise-plugins/
 * License: GPL2 .:. http://opensource.org/licenses/GPL-2.0
@@ -19,7 +19,7 @@ $cwfa_dq=new cwfa_dq;
 ////////////////////////////////////////////////////////////////////////////
 Global $wpdb,$dq_wp_option_version_txt,$dq_wp_option,$dq_wp_option_version_num;
 
-$dq_wp_option_version_num='1.7';
+$dq_wp_option_version_num='1.8';
 $dq_wp_option='daily_quotes';
 $dq_wp_option_version_txt=$dq_wp_option.'_version';
 
@@ -198,6 +198,7 @@ Global $wpdb,$dq_wp_option,$cw_daily_quotes_tbl,$dq_memcached,$dq_memcached_conn
 					//	Load quote section title and quote into theme
 					$layout_theme=preg_replace('/{{quote_title}}/',$dq_daily_quote_title,$layout_theme);
 					$layout_theme=preg_replace('/{{quote}}/',$qod_quote,$layout_theme);
+					$layout_theme=preg_replace('/{{quote_url}}/',urlencode($qod_quote),$layout_theme);
 					$qod_quote='';
 					
 					//	Add daily quote to build

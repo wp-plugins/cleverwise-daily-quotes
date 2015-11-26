@@ -199,7 +199,7 @@ $cw_daily_quotes_html .=<<<EOM
 <p>Where should this daily section be displayed?</p>
 <p>$qtypes</p>
 <p>Your WordPress Categories: [<a href="$cw_category_url">Manage Categories</a>]</p><p>$categories</p>
-<p>Custom Layout: <div style="margin-left: 20px;">Optional: This is the layout/theme/style that will be used instead of the general layout.  Leave blank to use general layout.<br><br><b>{{quote_title}}</b> = Display Quote Title<br><b>{{quote}}</b> = Display Daily Quote</div></p>
+<p>Custom Layout: <div style="margin-left: 20px;">Optional: This is the layout/theme/style that will be used instead of the general layout.  Leave blank to use general layout.<br><br><b>{{quote_title}}</b> = Display Quote Title<br><b>{{quote}}</b> = Display Daily Quote<br><b>{{quote_url}}</b> = Displays Daily Quote For Use In URL Or Form<br>&#42; For example to add tweet link: &#60;a href="http://twitter.com/home?status={{quote_url}}"&#62;Tweet This&#60;/a&#62;</div></p>
 <p><textarea name="qlayout" style="width: 400px; height: 200px;">$qlayout</textarea></p>
 EOM;
 
@@ -480,7 +480,7 @@ EOM;
 $cw_daily_quotes_html .=<<<EOM
 <form method="post">
 <input type="hidden" name="cw_action" value="settingsv">
-<p>General Theme/Layout:<div style="margin-left: 20px;">This is the layout/theme/style that will be used when no custom quote layout is provided.<br><br><b>{{quote_title}}</b> = Display Quote Title<br><b>{{quote}}</b> = Display Daily Quote<br><br>Enter the word "reset" without quotes to have the system set the style back to original theme/layout.</div></p>
+<p>General Theme/Layout:<div style="margin-left: 20px;">This is the layout/theme/style that will be used when no custom quote layout is provided.<br><br><b>{{quote_title}}</b> = Display Quote Title<br><b>{{quote}}</b> = Display Daily Quote<br><b>{{quote_url}}</b> = Displays Daily Quote For Use In URL Or Form<br>&#42; For example to add tweet link: &#60;a href="http://twitter.com/home?status={{quote_url}}"&#62;Tweet This&#60;/a&#62;<br><br>Enter the word "reset" without quotes to have the system set the style back to original theme/layout.</div></p>
 <p><textarea name="daily_quotes_layout" style="width: 400px; height: 250px;">$daily_quotes_layout</textarea></p>
 <p><input type="submit" value="Save" class="button"></p>
 </form>
@@ -498,6 +498,10 @@ EOM;
 
 $cw_daily_quotes_html .=<<<EOM
 <p>The following lists the new changes from version-to-version.</p>
+<p>Version: <b>1.8</b></p>
+<ul style="list-style: disc; margin-left: 25px;">
+<li>Added new theme feature that alters daily quote for URL and form safe calls</li>
+</ul>
 <p>Version: <b>1.7</b></p>
 <ul style="list-style: disc; margin-left: 25px;">
 <li>Fixed: Display bug when multiple daily sections where shown</li>
